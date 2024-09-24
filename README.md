@@ -1,2 +1,1 @@
-# assistentejuridico
-Assitente juridico
+# genai-demos-pages
