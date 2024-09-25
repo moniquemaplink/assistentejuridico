@@ -1,17 +1,29 @@
 steps:
-  # Executa o fluxo de trabalho de teste e captura a saída
-  - name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: 'bash'
-    args: ['-c', 'gcloud workflows run $_WORKFLOW_NAME-$BRANCH_NAME-$SHORT_SHA > /workspace/testoutput.log']
+  # Step 1: Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/llm-rag-maplink/demo-equatorial/assistentejuridico:$SHORT_SHA', '.']
 
-  # Checa a saída dos testes
-  - name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: 'bash'
-    args: ['gitops/test-$BRANCH_NAME.sh']
+  # Step 2: Push the Docker image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/llm-rag-maplink/demo-equatorial/assistentejuridico:$SHORT_SHA']
 
-  # Etapa para implantar o fluxo de trabalho na produção
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['workflows', 'deploy', '$_WORKFLOW_NAME-$BRANCH_NAME', '--source', 'gitops/workflow.yaml']
+  # Step 3: Deploy the Docker image to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    args: ['run', 'deploy', 'assistentejuridico',
+           '--image', 'us-central1-docker.pkg.dev/llm-rag-maplink/demo-equatorial/assistentejuridico:$SHORT_SHA',
+           '--region', 'us-central1',
+           '--platform', 'managed',
+           '--allow-unauthenticated']
+
+# Define the image as an artifact for the build
+images:
+  - 'us-central1-docker.pkg.dev/llm-rag-maplink/demo-equatorial/assistentejuridico:$SHORT_SHA'
+
+# Substitutions and options
+substitutions:
+  _SERVICE_NAME: "assistentejuridico"
 
 options:
   logging: CLOUD_LOGGING_ONLY
+  timeout: '900s'
