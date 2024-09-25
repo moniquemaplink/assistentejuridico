@@ -1,6 +1,6 @@
 steps:
   # Passo 1: Construir a imagem Docker
-  - name: 'Passo 1: Construir a imagem Docker'
+  - name: 'gcr.io/cloud-builders/docker'
     args:
       [
         'build',
@@ -9,7 +9,7 @@ steps:
       ]
 
   # Passo 2: Enviar a imagem Docker para o Artifact Registry
-  - name: 'Passo 2: Enviar a imagem Docker para o Artifact Registry'
+  - name: 'gcr.io/cloud-builders/docker'
     args:
       [
         'push',
@@ -17,7 +17,7 @@ steps:
       ]
 
   # Passo 3: Implantar no Cloud Run
-  - name: 'Passo 3: Implantar no Cloud Run'
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     args:
       [
         'run', 'deploy', 'assistentejuridico',
@@ -29,6 +29,7 @@ steps:
 
 images:
   - 'us-central1-docker.pkg.dev/llm-rag-maplink/assistentejuridico/assistentejuridico:$COMMIT_SHA'
+
 
 options:
   substitution_option: 'ALLOW_LOOSE'
