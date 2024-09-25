@@ -1,41 +1,34 @@
 steps:
-  # Passo 1: Build da imagem Docker
-  - name: 'gcr.io/cloud-builders/docker'
+  # Passo 1: Construir a imagem Docker
+  - name: 'Passo 1: Construir a imagem Docker'
     args:
       [
         'build',
-        '-t',
-        'us-central1-docker.pkg.dev/llm-rag-maplink/assistentejuridico/assistentejuridico:$SHORT_SHA',
+        '-t', 'us-central1-docker.pkg.dev/llm-rag-maplink/assistentejuridico/assistentejuridico:$COMMIT_SHA',
         '.'
       ]
 
-  # Passo 2: Push da imagem para o Artifact Registry
-  - name: 'gcr.io/cloud-builders/docker'
+  # Passo 2: Enviar a imagem Docker para o Artifact Registry
+  - name: 'Passo 2: Enviar a imagem Docker para o Artifact Registry'
     args:
       [
         'push',
-        'us-central1-docker.pkg.dev/llm-rag-maplink/assistentejuridico/assistentejuridico:$SHORT_SHA'
+        'us-central1-docker.pkg.dev/llm-rag-maplink/assistentejuridico/assistentejuridico:$COMMIT_SHA'
       ]
 
-  # Passo 3: Deploy da imagem no Cloud Run
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: 'bash'
+  # Passo 3: Implantar no Cloud Run
+  - name: 'Passo 3: Implantar no Cloud Run'
     args:
       [
-        '-c',
-        'gcloud run deploy assistentejuridico \
-          --image us-central1-docker.pkg.dev/llm-rag-maplink/assistentejuridico/assistentejuridico:$SHORT_SHA \
-          --region us-central1 \
-          --platform managed \
-          --allow-unauthenticated \
-          --port 8080 \
-          --memory 512Mi \
-          --cpu 1 \
-          --service-account 274649425839-compute@developer.gserviceaccount.com'
+        'run', 'deploy', 'assistentejuridico',
+        '--image', 'us-central1-docker.pkg.dev/llm-rag-maplink/assistentejuridico/assistentejuridico:$COMMIT_SHA',
+        '--region', 'us-central1',
+        '--platform', 'managed',
+        '--allow-unauthenticated'
       ]
 
 images:
-  - 'us-central1-docker.pkg.dev/llm-rag-maplink/assistentejuridico/assistentejuridico:$SHORT_SHA'
+  - 'us-central1-docker.pkg.dev/llm-rag-maplink/assistentejuridico/assistentejuridico:$COMMIT_SHA'
 
 options:
   substitution_option: 'ALLOW_LOOSE'
