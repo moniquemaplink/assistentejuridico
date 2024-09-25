@@ -16,8 +16,9 @@ steps:
         'us-central1-docker.pkg.dev/llm-rag-maplink/assistentejuridico/assistentejuridico:$COMMIT_SHA'
       ]
 
-  # Passo 3: Implantar no Cloud Run
+  # **Passo 3: Implantar no Cloud Run (com entrypoint corrigido)**
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
     args:
       [
         'run', 'deploy', 'assistentejuridico',
@@ -29,7 +30,6 @@ steps:
 
 images:
   - 'us-central1-docker.pkg.dev/llm-rag-maplink/assistentejuridico/assistentejuridico:$COMMIT_SHA'
-
 
 options:
   substitution_option: 'ALLOW_LOOSE'
