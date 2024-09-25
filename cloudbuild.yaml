@@ -1,8 +1,4 @@
 steps:
-  # Etapa para rodar os testes automatizados
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['workflows', 'deploy', '$_WORKFLOW_NAME-$BRANCH_NAME-$SHORT_SHA', '--source', 'gitops/workflow.yaml']
-
   # Executa o fluxo de trabalho de teste e captura a saída
   - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
@@ -16,3 +12,6 @@ steps:
   # Etapa para implantar o fluxo de trabalho na produção
   - name: 'gcr.io/cloud-builders/gcloud'
     args: ['workflows', 'deploy', '$_WORKFLOW_NAME-$BRANCH_NAME', '--source', 'gitops/workflow.yaml']
+
+options:
+  logging: CLOUD_LOGGING_ONLY
