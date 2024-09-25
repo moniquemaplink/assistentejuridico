@@ -1,28 +1,47 @@
 steps:
-  # Step 1: Build the Docker image
+  # Passo 1: Build da imagem Docker
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/llm-rag-maplink/demo-equatorial/assistentejuridico:$SHORT_SHA', '.']
+    args:
+      [
+        'build',
+        '-t',
+        'us-central1-docker.pkg.dev/llm-rag-maplink/assistentejuridico/assistentejuridico:$SHORT_SHA',
+        '.'
+      ]
 
-  # Step 2: Push the Docker image to Artifact Registry
+  # Passo 2: Push da imagem para o Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/llm-rag-maplink/demo-equatorial/assistentejuridico:$SHORT_SHA']
+    args:
+      [
+        'push',
+        'us-central1-docker.pkg.dev/llm-rag-maplink/assistentejuridico/assistentejuridico:$SHORT_SHA'
+      ]
 
-  # Step 3: Deploy the Docker image to Cloud Run
+  # Passo 3: Deploy da imagem no Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: 'gcloud'
-    args: ['run', 'deploy', 'assistentejuridico',
-           '--image', 'us-central1-docker.pkg.dev/llm-rag-maplink/demo-equatorial/assistentejuridico:$SHORT_SHA',
-           '--region', 'us-central1',
-           '--platform', 'managed',
-           '--allow-unauthenticated']
+    entrypoint: 'bash'
+    args:
+      [
+        '-c',
+        'gcloud run deploy assistentejuridico \
+          --image us-central1-docker.pkg.dev/llm-rag-maplink/assistentejuridico/assistentejuridico:$SHORT_SHA \
+          --region us-central1 \
+          --platform managed \
+          --allow-unauthenticated \
+          --port 8080 \
+          --memory 512Mi \
+          --cpu 1 \
+          --service-account 274649425839-compute@developer.gserviceaccount.com'
+      ]
 
-# Define the image as an artifact for the build
 images:
-  - 'us-central1-docker.pkg.dev/llm-rag-maplink/demo-equatorial/assistentejuridico:$SHORT_SHA'
-
-# Substitutions and options
-substitutions:
-  _SERVICE_NAME: "assistentejuridico"
+  - 'us-central1-docker.pkg.dev/llm-rag-maplink/assistentejuridico/assistentejuridico:$SHORT_SHA'
 
 options:
-  logging: CLOUD_LOGGING_ONLY
+  substitution_option: 'ALLOW_LOOSE'
+  logging: 'CLOUD_LOGGING_ONLY'
+  machineType: 'E2_MEDIUM'
+
+substitutions:
+  _SERVICE_NAME: 'assistentejuridico'
+
