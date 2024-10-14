@@ -4,7 +4,7 @@ steps:
     args:
       [
         'build',
-        '-t', 'us-central1-docker.pkg.dev/llm-rag-maplink/assistentejuridico/assistentejuridico:$COMMIT_SHA',
+        '-t', 'southamerica-east1-docker.pkg.dev/llm-rag-maplink/eqt-assistente-juridico/assistentejuridico:$COMMIT_SHA',
         '.'
       ]
 
@@ -13,7 +13,7 @@ steps:
     args:
       [
         'push',
-        'us-central1-docker.pkg.dev/llm-rag-maplink/assistentejuridico/assistentejuridico:$COMMIT_SHA'
+        'southamerica-east1-docker.pkg.dev/llm-rag-maplink/eqt-assistente-juridico/assistentejuridico:$COMMIT_SHA'
       ]
 
   # **Passo 3: Implantar no Cloud Run (com entrypoint corrigido)**
@@ -22,14 +22,14 @@ steps:
     args:
       [
         'run', 'deploy', 'assistentejuridico',
-        '--image', 'us-central1-docker.pkg.dev/llm-rag-maplink/assistentejuridico/assistentejuridico:$COMMIT_SHA',
-        '--region', 'us-central1',
+        '--image', 'southamerica-east1-docker.pkg.dev/llm-rag-maplink/eqt-assistente-juridico/assistentejuridico:$COMMIT_SHA',
+        '--region', 'southamerica-east1',
         '--platform', 'managed',
         '--allow-unauthenticated'
       ]
 
 images:
-  - 'us-central1-docker.pkg.dev/llm-rag-maplink/assistentejuridico/assistentejuridico:$COMMIT_SHA'
+  - 'southamerica-east1-docker.pkg.dev/llm-rag-maplink/eqt-assistente-juridico/assistentejuridico:$COMMIT_SHA'
 
 options:
   substitution_option: 'ALLOW_LOOSE'
@@ -38,4 +38,3 @@ options:
 
 substitutions:
   _SERVICE_NAME: 'assistentejuridico'
-
