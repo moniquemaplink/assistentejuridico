@@ -1,0 +1,6 @@
+*\__pycache__
+#python defaults
+*.pyc
+*.pyo
+*.pyd
+
