@@ -1,5 +1,6 @@
 import vertexai.preview.generative_models as generative_models
 
+
 PROMPT_DADOS = """Identifique e extraia exatamente as informações abaixo.
 - autor da ação (Nome completo da pessoa ou empresa)
 - CPF ou CNPJ do autor da ação
@@ -8,12 +9,34 @@ PROMPT_DADOS = """Identifique e extraia exatamente as informações abaixo.
 - Unidade consumidora (UC), se disponível
 - Endereço completo da unidade consumidora
 - Advogado da ação (Nome completo)
+- Número do processo judicial
+- Conta contrato ou instalação
 - Texto com um resumo dos fatos: especifique os fatos em dois parágrafos
+- Classificação da decisão judicial, se é acordo ou sentença
+- Se for sentença, verificar a existência de Acórdão
+- Trazer as informações da decisão (o que deve ser realizado pela empresa)
 - Uma lista completa com os pedidos resumidos em bullet points
+- Números de protocolos mencionados pelo cliente
 
 {tonalidade}
 
-Devolva no formato JSON {{"autor":"", "cpf_cnpj":"", "representante":"", "cpf":"", "uc":"", "endereco":"", "advogado":"", "fatos":"", "pedidos":""}}"""
+Devolva no formato JSON {{
+    "autor":"",
+    "cpf_cnpj":"",
+    "representante":"",
+    "cpf":"",
+    "uc":"",
+    "endereco":"",
+    "advogado":"",
+    "numero_processo":"",
+    "conta_contrato_instalacao":"",
+    "fatos":"",
+    "classificacao_decisao":"",
+    "existencia_acordao":"",
+    "informacoes_decisao":"",
+    "pedidos":"",
+    "numeros_protocolos":""
+}}"""
 
 
 PROMPT_MOTIVO = """Classificar o motivo do processo, selecionando todas as categorias aplicáveis da lista abaixo. Devolva no formato JSON com valores booleanos

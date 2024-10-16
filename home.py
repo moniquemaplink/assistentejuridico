@@ -117,6 +117,7 @@ if uploaded_file is not None:
                     st.error(e)
                     st.write(response)
             i = i + 1
+# home.py
 
 if "dados_processo" in st.session_state:
 
@@ -126,44 +127,76 @@ if "dados_processo" in st.session_state:
         if "autor" in st.session_state.dados_processo:
             st.markdown("**Autor:**")
             st.markdown(st.session_state.dados_processo["autor"])
+        
         if "cpf_cnpj" in st.session_state.dados_processo:
             st.markdown("**CPF/CNPJ:**")
             st.markdown(st.session_state.dados_processo["cpf_cnpj"])
+        
         if "endereco" in st.session_state.dados_processo:
             st.markdown("**Endereço:**")
             st.markdown(st.session_state.dados_processo["endereco"])
+        
         if "representante" in st.session_state.dados_processo:
             st.markdown("**Representante:**")
             st.markdown(st.session_state.dados_processo["representante"])
-        if "representante" in st.session_state.dados_processo:
-            st.markdown("**Unidade Consumidora:**")
+        
+        if "uc" in st.session_state.dados_processo:
+            st.markdown("**Unidade Consumidora (UC):**")
             st.markdown(st.session_state.dados_processo["uc"])
+        
         if "cpf" in st.session_state.dados_processo:
-            st.markdown("**CPF:**")
+            st.markdown("**CPF do Representante:**")
             st.markdown(st.session_state.dados_processo["cpf"])
+        
         if "advogado" in st.session_state.dados_processo:
             st.markdown("**Advogado:**")
             st.markdown(st.session_state.dados_processo["advogado"])
+        
+        if "numero_processo" in st.session_state.dados_processo:
+            st.markdown("**Número do Processo Judicial:**")
+            st.markdown(st.session_state.dados_processo["numero_processo"])
+        
+        if "conta_contrato_instalacao" in st.session_state.dados_processo:
+            st.markdown("**Conta/Contrato ou Instalação:**")
+            st.markdown(st.session_state.dados_processo["conta_contrato_instalacao"])
+        
         if "fatos" in st.session_state.dados_processo:
-            st.markdown("**Fatos:**")
+            st.markdown("**Resumo dos Fatos:**")
             texto_formatado = st.session_state.dados_processo["fatos"].replace("$", r"\$")
             st.write(texto_formatado)
-
+        
+        if "classificacao_decisao" in st.session_state.dados_processo:
+            st.markdown("**Classificação da Decisão Judicial:**")
+            st.markdown(st.session_state.dados_processo["classificacao_decisao"])
+        
+        if "existencia_acordao" in st.session_state.dados_processo:
+            st.markdown("**Existência de Acórdão:**")
+            st.markdown(st.session_state.dados_processo["existencia_acordao"])
+        
+        if "informacoes_decisao" in st.session_state.dados_processo:
+            st.markdown("**Informações da Decisão:**")
+            st.markdown(st.session_state.dados_processo["informacoes_decisao"])
+        
         if "pedidos" in st.session_state.dados_processo:
             st.markdown("**Pedidos:**")
             texto_formatado = st.session_state.dados_processo["pedidos"].replace("$", r"\$")
             st.write(texto_formatado)
+        
+        if "numeros_protocolos" in st.session_state.dados_processo:
+            st.markdown("**Números de Protocolos:**")
+            st.markdown(st.session_state.dados_processo["numeros_protocolos"])
 
         st.markdown("#### Motivos principais:")
         for key, value in st.session_state.motivo.items():
             if value:
-                st.markdown("- "+key)
+                st.markdown("- " + key)
         st.write("")
         st.write("Obs: É possível alterar a forma que os resultados são gerados.")
         st.write("Obs: Os motivos principais devem ser mapeados para aparecerem adequadamente.")
     
     with col2:
         pdf_viewer(st.session_state.bytes_data, height=int(page_height))
+
 
 else:
     st.markdown("### Suba um arquivo.")

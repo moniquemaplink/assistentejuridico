@@ -10,6 +10,7 @@ import vertexai
 from vertexai.generative_models import GenerativeModel, Part
 import vertexai.preview.generative_models as generative_models
 
+# src/gemini.py
 
 def gemini(
     project_id: str,
@@ -22,7 +23,7 @@ def gemini(
     vertexai.init(project=project_id, location=location)
 
     model = GenerativeModel(
-    "gemini-1.5-pro-001",
+        "gemini-1.5-pro-001",
     )
 
     safety_settings = {
@@ -39,9 +40,8 @@ def gemini(
     }
 
     response = model.generate_content(contents, stream=False, generation_config=generation_config,
-      safety_settings=safety_settings,
-    ).text
-
+                                     safety_settings=safety_settings,
+                                     ).text
 
     return response
 
@@ -59,7 +59,7 @@ def str2json(text):
     if len(end_pos) > 0:
         end_pos = end_pos[0]
         response = response[:end_pos]
-    response = response.replace("False","false").replace("True","true")
+    response = response.replace("False", "false").replace("True", "true")
 
     try:
         return json.loads(response.strip())
