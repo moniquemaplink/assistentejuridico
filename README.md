@@ -44,12 +44,55 @@ O projeto depende de várias bibliotecas de terceiros, listadas no arquivo `requ
 pip install -r requirements.txt
 ```
 
+## Configuração do Google Cloud SDK
+
+Para conectar a aplicação ao Google Cloud, siga os passos abaixo:
+
+1. **Inicializar o `gcloud`** :
+   Execute o comando para configurar o Google Cloud SDK:
+
+```
+gcloud init
+```
+
+   Siga as instruções para escolher sua conta, projeto, e definir a região e zona padrão.
+
+1. **Autenticar Credenciais** :
+   Execute o comando para configurar as credenciais padrão:
+
+```
+gcloud auth application-default login
+```
+
+1. **Definir Variáveis de Ambiente** :
+   Defina as variáveis necessárias para o projeto:
+
+* `GCP_PROJECT`: ID do seu projeto no Google Cloud.
+* `GCP_REGION`: Região onde os serviços serão executados.
+
+   No Linux/macOS:
+
+```
+export GCP_PROJECT=<seu_project_id>
+export GCP_REGION=<sua_região>
+```
+
+   No Windows:
+
+```
+set GCP_PROJECT=<seu_project_id>
+set GCP_REGION=<sua_região>
+
+```
+
+Isso garante que sua aplicação esteja configurada corretamente para interagir com o Google Cloud.
+
 ## Uso
 
 Após configurar o ambiente e instalar as dependências, você pode iniciar o projeto localmente com o Streamlit:
 
 ```bash
-streamlit run home.py
+streamlit run home.py --server.port=8080 --server.address=0.0.0.0 --theme.base=light
 ```
 
 Isso abrirá a interface do Assistente Jurídico, permitindo o upload de arquivos, extração de dados e geração de respostas.
